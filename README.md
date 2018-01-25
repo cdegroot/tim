@@ -21,7 +21,7 @@ top of mind ;-)
 Simple (at least, that's the plan):
 
 * The two thermostat wires will be used to measure temperature, old-school using a 
-  thermistor and an ATtiny45 for A/C converter;
+  thermistor and an ATtiny45 for A/D converter;
 * The ATtiny45 will talk I2C or SPI to a RPi3 to communicate indoor temperature;
 * My existing outdoor sensor from Lacrosse will be read by the same RPi3 using 
   an RTL-SDR dongle I had gathering dust;
