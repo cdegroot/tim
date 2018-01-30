@@ -1,19 +1,33 @@
 <template>
   <div>
     <h3>Hello from Vue.js!</h3>
-    <p>{{msg}}</p>
+    <p>Outside temp: {{outside_temp}}&deg;C</p>
   </div>
 </template>
 
 <script>
-    export default {
-        name: 'hello',
-        data() {
-            return {
-                msg: 'Simple Thermostat using Phoenix, Vue and Webpack.'
-            }
-        }
+  import {Socket} from "phoenix"
+  let socket = new Socket("/socket", {params: {token: window.userToken}})
+  socket.connect()
+
+  export default {
+    name: 'thermostat',
+    mounted() {
+      this.channel = socket.channel("thermostat", {});
+      this.channel.on("new_msg", payload => {
+        this.outside_temp = payload.outside_temp;
+      });
+      this.channel.join()
+        .receive("ok", response => { console.log("Joined successfully", response) })
+        .receive("error", response => { console.log("Unable to join", response) })
+    },
+    data() {
+      return {
+        channel: null,
+        outside_temp: -273.15
+      }
     }
+  }
 </script>
 
 <style scoped>

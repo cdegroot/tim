@@ -2,7 +2,7 @@ defmodule UiWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", UiWeb.RoomChannel
+  channel "thermostat", UiWeb.ThermostatChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
