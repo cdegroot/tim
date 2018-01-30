@@ -10,7 +10,7 @@
         name: 'hello',
         data() {
             return {
-                msg: 'Simple example using Phoenix, Vue and Webpack.'
+                msg: 'Simple Thermostat using Phoenix, Vue and Webpack.'
             }
         }
     }

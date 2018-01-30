@@ -8,7 +8,7 @@ use Mix.Config
 # General application configuration
 config :ui,
   namespace: Ui,
-  ecto_repos: [Ui.Repo]
+  ecto_repos: []
 
 # Configures the endpoint
 config :ui, UiWeb.Endpoint,
