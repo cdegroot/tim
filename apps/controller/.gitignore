@@ -19,11 +19,6 @@ erl_crash.dump
 # Also ignore archive artifacts (built via "mix archive.build").
 *.ez
 
-# Static artifacts
-apps/ui/assets/node_modules
-apps/ui/assets/dist/
-apps/ui/assets/npm-debug.log
-apps/ui/assets/yarn-debug.log
-apps/ui/assets/yarn-error.log
-apps/ui/assets/.sass-cache
-apps/ui/assets/.tern-port
+# Ignore package tarball (built via "mix hex.build").
+controller-*.tar
+

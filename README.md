@@ -76,3 +76,11 @@ a quick test:
 For my Lacrosse sensor; it should start reporting the temperature - make a note of the id, you'll need
 it (now and every time you change batteries, alas). 
 
+For the UI, node is needed
+
+    asdf plugin-add nodejs
+    bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+    
+To fetch the world:
+
+    asdf install
