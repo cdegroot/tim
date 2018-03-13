@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3>Hello from Vue.js!</h3>
     <p>Outside temp: {{outside_temp}}&deg;C</p>
   </div>
 </template>
