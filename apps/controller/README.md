@@ -1,21 +1,19 @@
 # Controller
 
-**TODO: Add description**
+This contains The Works - the actual thermostat code.
 
-## Installation
+It can run in different modes depending on MIX_ENV:
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `controller` to your list of dependencies in `mix.exs`:
+* `dev` is regular development, and all the hardware is faked;
+* `hw_dev` is hardware development, and assumes everything is there;
+* `prod` is in production and of course assumes everything is there.
 
-```elixir
-def deps do
-  [
-    {:controller, "~> 0.1.0"}
-  ]
-end
-```
+The actual modules are configured through the Mix config and disclosed
+through the main controller module's helper functions. The controller
+then contains the API to access:
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/controller](https://hexdocs.pm/controller).
-
+* The indoor sensor, with history
+* The outdoor sensor, with history
+* The current state of the heating (fan off/on, stage off/one/two)
+* The current set temperature (and, later on, schedule)
+* Functions to override the set temperature and fan (run for five minutes, etc)

@@ -1,8 +1,10 @@
 defmodule UiWeb.ThermostatChannel do
   use UiWeb, :channel
+  require Logger
 
-  def join("thermostat", payload, socket) do
-    send(self, :after_join)
+  def join("thermostat", _payload, socket) do
+    Logger.debug("Someone joined thermostat #{inspect socket}")
+    send(self(), :after_join)
     {:ok, socket}
   end
 
