@@ -16,7 +16,7 @@ defmodule OutdoorTemp.Server do
 
   def init([]) do
     Logger.info("Starting rtl_433 reader")
-    port = Port.open({:spawn, @rtl_433_cmd}, [{:line, 132}, :stderr_to_stdout])
+    port = Port.open({:spawn, @rtl_433_cmd}, [{:line, 132}, :stderr_to_stdout, :exit_status])
     {:ok, %State{port: port}}
   end
   
@@ -35,8 +35,13 @@ defmodule OutdoorTemp.Server do
     {:noreply, state}
   end
 
+  def handle_info({_port, {:exit_status, status}}, state) do
+    Logger.error("rtl_433 bailed out with #{status}, exiting")
+    {:stop, "rtl_433 exited with #{status}", state}
+  end
+
   def handle_info(msg, state) do
-    Logger.info(" ignore #{inspect msg}")
+    Logger.debug(" ignore #{inspect msg}")
     {:noreply, state}
   end
 end
