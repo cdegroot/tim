@@ -5,11 +5,16 @@ defmodule OutdoorTemp.Server do
   require Logger
 
   defmodule State do
-    defstruct [:port, :id]
+    defstruct [:port, :id, :callbacks]
   end
 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  # TODO unregister?
+  def register(callback_module) do
+    GenServer.cast(__MODULE__, {:register, callback_module})
   end
 
   ## Server side
@@ -17,7 +22,11 @@ defmodule OutdoorTemp.Server do
   def init([]) do
     Logger.info("Starting rtl_433 reader")
     port = Port.open({:spawn, @rtl_433_cmd}, [{:line, 132}, :stderr_to_stdout, :exit_status])
-    {:ok, %State{port: port}}
+    {:ok, %State{port: port, id: nil, callbacks: []}}
+  end
+
+  def handle_inf({:register, callback}, state) do
+    {:noreply, %State{state | callbacks: [callback | state.callbacks]}}
   end
   
   def handle_info({_port, {:data, {:eol, '\tSensor ID:\t ' ++ sensor_id}}}, state) do
@@ -32,6 +41,7 @@ defmodule OutdoorTemp.Server do
     |> hd
     |> String.to_float
     Logger.info("  temp for #{state.id} is #{inspect temp}")
+    send_events(state.id, temp, state.callbacks)
     {:noreply, state}
   end
 
@@ -43,5 +53,12 @@ defmodule OutdoorTemp.Server do
   def handle_info(msg, state) do
     Logger.debug(" ignore #{inspect msg}")
     {:noreply, state}
+  end
+
+  defp send_events(id, temp, callback_modules) do
+    callback_modules 
+    |> Enum.map(fn(callback_module) ->
+      callback_module.outdoor_temp_event(id, temp)
+    end)
   end
 end
