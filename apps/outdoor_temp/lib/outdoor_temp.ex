@@ -1,18 +1,16 @@
 defmodule OutdoorTemp do
   @moduledoc """
-  Documentation for OutdoorTemp.
+  Starts the application by initializing the supervisor
+  and genserver that monitor the rtl_433 process.
   """
 
-  @doc """
-  Hello world.
+  use Application
 
-  ## Examples
-
-      iex> OutdoorTemp.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def start(_type, _args) do
+    children = [%{
+      id: OutdoorTemp,
+      start: {OutdoorTemp.Server, :start_link, []}
+    }]
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end

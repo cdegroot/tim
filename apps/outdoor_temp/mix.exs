@@ -17,6 +17,7 @@ defmodule OutdoorTemp.Mixfile do
 
   def application do
     [
+      mod: {OutdoorTemp, []},
       extra_applications: [:logger]
     ]
   end
